@@ -1,13 +1,25 @@
 #!/usr/bin/python2
-from flask import Flask, url_for,render_template
+from flask import Flask, render_template, request, redirect,jsonify, url_for, flash
 app = Flask(__name__)
 
+from sqlalchemy import create_engine, asc, desc
+from sqlalchemy.orm import sessionmaker
+from database_setup import Base, Genre, Tvseries
 
+
+#Connect to Database and create database session
+engine = create_engine('sqlite:///tvseries.db')
+Base.metadata.bind = engine
+
+DBSession = sessionmaker(bind=engine)
+session = DBSession()
 @app.route('/')
 @app.route('/home')
 def index():
     """"index page for the wesite """
-    return render_template('index.html')
+    genrequery = session.query(Genre).all()
+    tvseriesquery = session.query(Tvseries).order_by(desc(Tvseries.id)).limit(10).all()
+    return render_template('index.html', genres = genrequery,tvseries = tvseriesquery)
 
 
 @app.route('/genre')

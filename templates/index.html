@@ -1,7 +1,28 @@
 {% extends "main.html" %}
 {% block content %}
 {% include "header.html" %}
-<div class="container">
-    <p>Home Page</p>
-</div>
+<main>
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-4">
+                <h2>Genre:</h2>
+                {% for genre in genres%}
+                <ul>
+                <h4><li>{{genre.name}}</li></h4>
+                </ul>
+                {% endfor %}
+            </div>
+            <div class="col-md-8">
+                <h2>Latest:</h2>
+                {% for tv in tvseries %}
+                <ul>
+                    <h4><li>{{tv.name}} ({{tv.genre.name}}) </li></h4>
+                </ul>
+                {%endfor%}
+            </div>
+
+        </div>
+    </div>
+</main>
 {% endblock %}

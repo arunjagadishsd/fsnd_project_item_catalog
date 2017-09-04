@@ -20,11 +20,11 @@ class Tvseries(Base):
     """Class to implement the database for the tv series"""
     __tablename__ = 'tvseries'
 
-    id = Column(Integer, primary_key=True)
     name = Column(String(80), nullable=False)
-    description = Column(String(250), nullable=False)
-    rating = Column(String(50))
-    category_id = Column(Integer, ForeignKey('genre.id'))
+    id = Column(Integer, primary_key=True)
+    description = Column(String(500), nullable=False)
+    rating = Column(Integer)
+    genre_id = Column(Integer, ForeignKey('genre.id'))
     genre = relationship(Genre)
 
 
