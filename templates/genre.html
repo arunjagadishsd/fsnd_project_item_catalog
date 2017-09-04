@@ -2,8 +2,17 @@
 {% block content %}
 {% include "header.html" %}
 <main>
-    <div class="container">
-        <p>genre Page</p>
-    </div>
-</main>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>{{genre.name}}:</h2>
+                    {%for tv in tvseries%}
+                    <ul>
+                        <li><a href="{{url_for('tvseries',tvseries_id=tv.id)}}">{{tv.name}}</a></li>
+                    </ul>
+                    {%endfor%}
+                </div>
+            </div>
+        </div>
+    </main>
 {% endblock %}

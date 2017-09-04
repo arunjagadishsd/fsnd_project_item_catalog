@@ -10,9 +10,8 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-tvseriesquery = session.query(Tvseries).order_by(desc(Tvseries.id)).limit(10).all()
+genre = session.query(Genre).all()
+tvseriesquery = tvseriesquery = session.query(Tvseries).filter_by(id = 1).one()
 
-for i in tvseriesquery:
-    print("Name:{name} genre:{rating}".format(name=i.name, rating=i.genre.name))
-    tvseriesquery = session.query(Tvseries).order_by(desc(Tvseries.id)).limit(10).all()
-    , tvseries = tvseriesquery
+print (tvseriesquery.name)
+

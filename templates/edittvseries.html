@@ -5,36 +5,41 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <h2>Edit Tv Series:</h2>
+                <h2>Edit {{tvseries.name}}:</h2>
                 <form action="#" method="post">
                     <div class="form-group">
                         <label for="name">Name:</label>
-                        <input type="text" class="form-control" id "name" name="name" placeholder="Enter name">
+                        <input type="text" class="form-control" id "name" name="name" placeholder="Enter name" value="{{tvseries.name}}">
                     </div>
                     <div class="form-group">
                         <label for="rating">Rating:</label>
-                        <input type="text" class="form-control" id="rating" name="rating" placeholder="Enter rating">
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Description:</label>
-                        <textarea class="form-control" name="description" id="description" rows="5"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="category">Category:</label>
-                        <select class="form-control" name="category" id="category">
-                              <option>Action</option>
-                              <option>Adventure</option>
-                              <option>Anime</option>
-                              <option>Comedy</option>
-                              <option>Crime</option>
+                        <select class="form-control" name="rating" id="rating" value="{{tvseries.rating}}">
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                              <option value="4">4</option>
+                              <option value="5">5</option>
                             </select>
-                    </div>
-                    <input class="btn btn-primary" type="submit" value="Submit">
-                    <a class="btn btn-danger" href="#" role="button">Cancel</a>
+                        <div class="form-group">
+                            <label for="description">Description:</label>
+                            <textarea class="form-control" name="description" id="description" rows="5"value=" {{tvseries.description}}"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Genre:</label>
+                            <select class="form-control" name="genre_id" id="genre" value="{{tvseries.genre_id}}">
+                              <option value="1">Action</option>
+                              <option value="2">Adventure</option>
+                              <option value="3">Anime</option>
+                              <option value="4">Comedy</option>
+                              <option value="5">Crime</option>
+                            </select>
+                        </div>
+                        <input class="btn btn-primary" type="submit" value="Submit">
+                        <a class="btn btn-danger" href="#" role="button">Cancel</a>
 
                 </form>
+                </div>
             </div>
         </div>
-    </div>
 </main>
 {% endblock %}

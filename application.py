@@ -22,41 +22,71 @@ def index():
     return render_template('index.html', genres = genrequery,tvseries = tvseriesquery)
 
 
-@app.route('/genre')
-@app.route('/home/genre')
-def genre():
+
+@app.route('/home/genre/<int:genre_id>/')
+def genre(genre_id):
     """"genre page for the wesite """
-    return render_template('genre.html')
+    genrequery = session.query(Genre).filter_by(id = genre_id).one()
+    tvseriesquery = session.query(Tvseries).filter_by(genre_id = genre_id).all()
+    return render_template('genre.html',genre = genrequery, tvseries = tvseriesquery)
 
 
-@app.route('/genre/tvseries')
-@app.route('/home/genre/tvseries')
-def tvseries():
+@app.route('/home/tvseries/<int:tvseries_id>')
+def tvseries(tvseries_id):
     """"genre page for the wesite """
-    return render_template('tvseries.html')
+    tvseriesquery = session.query(Tvseries).filter_by(id = tvseries_id).one()
+    return render_template('tvseries.html',tvseries = tvseriesquery)
 
 
-@app.route('/genre/tvseries/add')
-@app.route('/home/genre/tvseries/add')
+
+@app.route('/home/tvseries/add',methods=['GET','POST'])
 def add_tvseries():
     """"page to add new tv series for the wesite"""
-    return render_template('addtvseries.html')
+    if request.method == 'POST':
+        newTvseries = Tvseries(name = request.form['name'], rating = request.form['rating'], description = request.form['description'], genre_id = request.form['genre_id'])
+        session.add(newTvseries)
+        session.commit()
+        return redirect(url_for('index'))
+    else:
+        return render_template('addtvseries.html')
 
 
-@app.route('/genre/tvseries/edit')
-@app.route('/home/genre/tvseries/edit')
-def edit_tvseries():
+
+@app.route('/home/tvseries/<int:tvseries_id>/edit',methods=['GET','POST'])
+def edit_tvseries(tvseries_id):
     """"page to edit tv series for the wesite"""
-    return render_template('edittvseries.html')
+    editedTvseries = session.query(Tvseries).filter_by(id = tvseries_id).one()
+    if request.method == 'POST':
+        if request.form['name']:
+            editedTvseries.name = request.form['name']
+        if request.form['rating']:
+            editedTvseries.rating = request.form['rating']
+        if request.form['description']:
+            editedTvseries.description = request.form['description']
+        if request.form['genre_id']:
+            editedTvseries.genre_id = request.form['genre_id']
+        session.add(editedTvseries)
+        session.commit()
+        flash('Tvseries Successfully Edited')
+        return redirect(url_for('tvseries',tvseries_id = tvseries_id))
+    else:
+        return render_template('edittvseries.html',tvseries = editedTvseries)
 
 
-@app.route('/genre/tvseries/delete')
-@app.route('/home/genre/tvseries/delete')
-def delete_tvseries():
+
+@app.route('/home/tvseries/<int:tvseries_id>/delete',methods=['GET','POST'])
+def delete_tvseries(tvseries_id):
     """"page to delete tv series for the wesite"""
-    return render_template('deletetvseries.html')
+    tvseriesDelete = session.query(Tvseries).filter_by(id = tvseries_id).one()
+    if request.method == 'POST':
+        session.delete(tvseriesDelete)
+        session.commit
+        return redirect(url_for('index'))
+    else :
+        return render_template('deletetvseries.html',tvseries = tvseriesDelete)
 
 
 if __name__ == '__main__':
+    app.secret_key = 'my_secret_key'
     app.debug = True
     app.run(host='0.0.0.0', port=8000)

@@ -9,7 +9,7 @@
                 <h2>Genre:</h2>
                 {% for genre in genres%}
                 <ul>
-                <h4><li>{{genre.name}}</li></h4>
+                <h4><li><a href="{{url_for('genre',genre_id = genre.id)}}">{{genre.name}}</a></li></h4>
                 </ul>
                 {% endfor %}
             </div>
@@ -17,7 +17,7 @@
                 <h2>Latest:</h2>
                 {% for tv in tvseries %}
                 <ul>
-                    <h4><li>{{tv.name}} ({{tv.genre.name}}) </li></h4>
+                    <h4><li><a href="{{url_for('tvseries',tvseries_id = tv.id)}}">{{tv.name}}</a> ({{tv.genre.name}}) </li></h4>
                 </ul>
                 {%endfor%}
             </div>
