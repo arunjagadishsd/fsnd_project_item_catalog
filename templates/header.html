@@ -1,7 +1,13 @@
 <header>
     <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
         <div class="container">
-            <a class="navbar-brand" href="{{url_for('index')}}">TV SERIES</a>
+            <div class="col-10 align-self-start">
+                <a class="navbar-brand" href="{{url_for('index')}}">TV SERIES</a>
+                <a class="navbar-brand" href="{{url_for('index')}}">Go To Home</a>
+            </div>
+            <div class="col-2 align-self-end">
+                <a class="btn btn-primary" href="{{url_for('index')}}" role="button">Login</a>
+            </div>
         </div>
     </nav>
 </header>

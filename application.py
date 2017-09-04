@@ -60,6 +60,7 @@ def add_tvseries():
     if request.method == 'POST':
         newTvseries = Tvseries(name = request.form['name'], rating = request.form['rating'], description = request.form['description'], genre_id = request.form['genre_id'])
         session.add(newTvseries)
+        flash("New Tvseries Successfully Added")
         session.commit()
         return redirect(url_for('index'))
     else:
@@ -81,8 +82,8 @@ def edit_tvseries(tvseries_id):
         if request.form['genre_id']:
             editedTvseries.genre_id = request.form['genre_id']
         session.add(editedTvseries)
+        flash("%s Successfully Edited" % editedTvseries.name)
         session.commit()
-        flash('Tvseries Successfully Edited')
         return redirect(url_for('tvseries',tvseries_id = tvseries_id))
     else:
         return render_template('edittvseries.html',tvseries = editedTvseries)
@@ -95,6 +96,7 @@ def delete_tvseries(tvseries_id):
     tvseriesDelete = session.query(Tvseries).filter_by(id = tvseries_id).one()
     if request.method == 'POST':
         session.delete(tvseriesDelete)
+        flash("%s Successfully Deleted" % tvseriesDelete.name)
         session.commit
         return redirect(url_for('index'))
     else :
