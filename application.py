@@ -13,6 +13,21 @@ Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
+
+@app.route('/home/genre/<int:genre_id>/JSON')
+def genreJSON(genre_id):
+    """Funtion to return JSON data for Genre"""
+    tvseriesquery = session.query(Tvseries).filter_by(genre_id = genre_id).all()
+    return jsonify(Tvseries=[i.serialize for i in tvseriesquery])
+
+@app.route('/home/tvseries/<int:tvseries_id>/JSON')
+def tvseriesJSON(tvseries_id):
+    """Funtion to return JSON data for Genre"""
+    tvseriesquery = session.query(Tvseries).filter_by(id = tvseries_id).one()
+    return jsonify( tvseriesquery =tvseriesquery.serialize)
+
+
+
 @app.route('/')
 @app.route('/home')
 def index():

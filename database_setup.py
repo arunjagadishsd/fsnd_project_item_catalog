@@ -15,6 +15,15 @@ class Genre(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(80), nullable=False)
 
+    @property
+    def serialize(self):
+        """Return Data For JSON"""
+        return {
+            'name' : self.name,
+            'id'   : self.id,
+        }
+
+
 
 class Tvseries(Base):
     """Class to implement the database for the tv series"""
@@ -26,6 +35,15 @@ class Tvseries(Base):
     rating = Column(Integer)
     genre_id = Column(Integer, ForeignKey('genre.id'))
     genre = relationship(Genre)
+    @property
+    def serialize(self):
+        """Return Data For JSON"""
+        return {
+            'name'          : self.name,
+            'id'            : self.id,
+            'description'   : self.description,
+            'rating'        : self.rating,
+        }
 
 
 db_engine = create_engine('sqlite:///tvseries.db')

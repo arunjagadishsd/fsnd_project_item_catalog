@@ -8,7 +8,14 @@
                     <h2>{{genre.name}}:</h2>
                     {%for tv in tvseries%}
                     <ul>
-                        <li><a href="{{url_for('tvseries',tvseries_id=tv.id)}}">{{tv.name}}</a></li>
+                        <li>
+                            <a href="{{url_for('tvseries',tvseries_id=tv.id)}}">{{tv.name}}</a>
+                            <p>
+                                <a href="{{url_for('edit_tvseries',tvseries_id = tv.id)}}">Edit</a>
+                                <span>||</span>
+                                <a href="{{url_for('delete_tvseries',tvseries_id = tv.id)}}">Delete</a>
+                            </p>
+                        </li>
                     </ul>
                     {%endfor%}
                 </div>
