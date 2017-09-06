@@ -27,7 +27,9 @@
             </div>
             <div class="col-md-8">
                 <h2>Latest:</h2>
+                {% if 'username' in session %}
                 <h4><a href="{{url_for('add_tvseries')}}">Add New TV Series</a></h4>
+                {%endif%}
                 {% for tv in tvseries %}
                 <ul>
                     <h4>

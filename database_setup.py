@@ -7,6 +7,16 @@ from sqlalchemy import create_engine
 Base = declarative_base()
 
 
+class User(Base):
+    """"Class for the details of the user"""
+
+    __tablename__ = 'user'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(80), nullable=False)
+    email = Column(String(250), nullable=False)
+
+
 class Genre(Base):
     """Class to implement the database for genre of tv series"""
 
@@ -35,6 +45,8 @@ class Tvseries(Base):
     rating = Column(Integer)
     genre_id = Column(Integer, ForeignKey('genre.id'))
     genre = relationship(Genre)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
     @property
     def serialize(self):
         """Return Data For JSON"""
