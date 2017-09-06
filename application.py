@@ -15,7 +15,7 @@ import requests
 # imports for Databse
 from sqlalchemy import create_engine, asc, desc
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Genre, Tvseries
+from database_setup import Base, Genre, User, Tvseries
 app = Flask(__name__)
 
 CLIENT_ID = json.loads(
@@ -27,11 +27,13 @@ Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
-# Create anti-forgery state token
 
 
 @app.route('/login')
 def showLogin():
+    """ To render login page
+        @param state is the state key to check session
+    """
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in xrange(32))
     login_session['state'] = state
@@ -41,6 +43,8 @@ def showLogin():
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
+    """To connect to the google login
+    """
     # Validate state token
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter.'), 401)
@@ -122,7 +126,6 @@ def gconnect():
     flash("you are now logged in as %s" % login_session['username'])
     print "done!"
     return output
-# to logout from the page
 
 
 def createUser(login_session):
@@ -146,7 +149,7 @@ def getUserID(email):
     except:
         return None
 
-
+# to logout from the page
 @app.route('/gdisconnect')
 def gdisconnect():
     access_token = login_session.get('access_token')
@@ -196,7 +199,7 @@ def tvseriesJSON(tvseries_id):
 @app.route('/')
 @app.route('/home')
 def index():
-    """"index page for the wesite """
+    """"home page for the wesite """
     genrequery = session.query(Genre).all()
     tvseriesquery = session.query(Tvseries).order_by(
         desc(Tvseries.id)).limit(10).all()
@@ -217,7 +220,7 @@ def genre(genre_id):
 def tvseries(tvseries_id):
     """"genre page for the wesite """
     tvseriesquery = session.query(Tvseries).filter_by(id=tvseries_id).one()
-    info = getUserInfo(restaurant.user_id)
+    info = getUserInfo(tvseriesquery.user_id)
     if 'username' not in login_session or info.id != login_session['user_id']:
         return render_template('tvseriespublic.html', tvseries=tvseriesquery)
     else:
@@ -235,7 +238,8 @@ def add_tvseries():
             name=request.form['name'],
             rating=request.form['rating'],
             description=request.form['description'],
-            genre_id=request.form['genre_id'])
+            genre_id=request.form['genre_id'],
+            user_id=login_session['user_id'])
         session.add(newTvseries)
         flash("New Tvseries Successfully Added")
         session.commit()
@@ -279,7 +283,7 @@ def delete_tvseries(tvseries_id):
     if 'username' not in login_session:
         flash("login to delete the tvseries")
         return redirect('/login')
-    if editedTvseries.user_id != login_session['user_id']:
+    if tvseriesDelete.user_id != login_session['user_id']:
         return """<script>function myFunction()
                 {alert('you are not authorized to delete this tvseries');}
                 </script><body onload='myFunction()''>"""

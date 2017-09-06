@@ -29,10 +29,9 @@ class Genre(Base):
     def serialize(self):
         """Return Data For JSON"""
         return {
-            'name' : self.name,
-            'id'   : self.id,
+            'name': self.name,
+            'id': self.id,
         }
-
 
 
 class Tvseries(Base):
@@ -47,14 +46,15 @@ class Tvseries(Base):
     genre = relationship(Genre)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
+
     @property
     def serialize(self):
         """Return Data For JSON"""
         return {
-            'name'          : self.name,
-            'id'            : self.id,
-            'description'   : self.description,
-            'rating'        : self.rating,
+            'name': self.name,
+            'id': self.id,
+            'description': self.description,
+            'rating': self.rating,
         }
 
 
